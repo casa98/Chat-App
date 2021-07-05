@@ -6,14 +6,17 @@ import 'package:chat_app_client/pages/register_page.dart';
 import 'package:chat_app_client/pages/users_page.dart';
 
 final Map<String, Widget Function(BuildContext context)> appRoutes = {
-  'user': (_) => UsersPage(),
-  'chat': (_) => ChatPage(),
+  RoutePath.usersRoute: (_) => UsersPage(),
+  RoutePath.chatRoute: (_) => ChatPage(),
   RoutePath.loginRoute: (_) => LoginPage(),
   RoutePath.registerRoute: (_) => RegisterPage(),
-  'loading': (_) => LoadingPage(),
+  RoutePath.loadingRoute: (_) => LoadingPage(),
 };
 
 class RoutePath {
   static const loginRoute = 'login';
   static const registerRoute = 'register';
+  static const usersRoute = 'users';
+  static const chatRoute = 'chat';
+  static const loadingRoute = 'loading';
 }
