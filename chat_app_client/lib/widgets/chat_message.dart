@@ -3,15 +3,29 @@ import 'package:flutter/material.dart';
 class ChatMessage extends StatelessWidget {
   final String text;
   final String uid; // It will help me what position to show messages in
+  final AnimationController animationController;
 
-  const ChatMessage({Key key, this.text, this.uid}) : super(key: key);
+  const ChatMessage({
+    @required this.text,
+    @required this.uid,
+    @required this.animationController,
+  });
   @override
   Widget build(BuildContext context) {
     final _screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      child: this.uid == 'my_uid'
-          ? _myMessage(_screenWidth)
-          : _notMyMessage(_screenWidth),
+    return FadeTransition(
+      opacity: animationController,
+      child: SizeTransition(
+        sizeFactor: CurvedAnimation(
+          parent: animationController,
+          curve: Curves.easeIn,
+        ),
+        child: Container(
+          child: this.uid == 'my_uid'
+              ? _myMessage(_screenWidth)
+              : _notMyMessage(_screenWidth),
+        ),
+      ),
     );
   }
 

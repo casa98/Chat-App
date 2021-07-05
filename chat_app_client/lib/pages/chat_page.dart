@@ -1,41 +1,16 @@
-import 'package:chat_app_client/widgets/chat_message.dart';
 import 'package:flutter/material.dart';
+import 'package:chat_app_client/widgets/chat_message.dart';
 
 class ChatPage extends StatefulWidget {
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final _textController = new TextEditingController();
   final _focusNode = new FocusNode();
 
-  List<ChatMessage> _messages = [
-    ChatMessage(
-        text: 'Hello bro dafsfnk cwae sfdcdas fae sd<caesds sf', uid: 'my_uid'),
-    ChatMessage(text: 'Jaguaryou bro', uid: 'my_uid'),
-    ChatMessage(text: 'Hellooooooo btiches heheh', uid: '123'),
-    ChatMessage(text: 'Lets hang out tonight', uid: 'my_uid'),
-    ChatMessage(
-        text:
-            'Sure dude! ds gsfdf sef hgsv rthterse sfasf reg tr gdvgth yrthgfdv dgfhdbsvrf dvbdgfb vfsdvc dsfbghtf gfv fghg fdv dgb vsdfb ghfgt',
-        uid: '123'),
-    ChatMessage(
-        text: 'Hello bro dafsfnk cwae sfdcdas fae sd<caesds sf', uid: 'my_uid'),
-    ChatMessage(text: 'Jaguaryou bro', uid: 'my_uid'),
-    ChatMessage(text: 'Hellooooooo btiches heheh', uid: '123'),
-    ChatMessage(text: 'Lets hang out tonight', uid: 'my_uid'),
-    ChatMessage(
-        text: 'Hello bro dafsfnk cwae sfdcdas fae sd<caesds sf', uid: 'my_uid'),
-    ChatMessage(text: 'Jaguaryou bro', uid: 'my_uid'),
-    ChatMessage(text: 'Hellooooooo btiches heheh', uid: '123'),
-    ChatMessage(text: 'Lets hang out tonight', uid: 'my_uid'),
-    ChatMessage(
-        text: 'Hello bro dafsfnk cwae sfdcdas fae sd<caesds sf', uid: 'my_uid'),
-    ChatMessage(text: 'Jaguaryou bro', uid: 'my_uid'),
-    ChatMessage(text: 'Hellooooooo btiches heheh', uid: '123'),
-    ChatMessage(text: 'Lets hang out tonight', uid: 'my_uid'),
-  ];
+  List<ChatMessage> _messages = [];
 
   @override
   Widget build(BuildContext context) {
@@ -103,11 +78,28 @@ class _ChatPageState extends State<ChatPage> {
 
   _handleSubmit(String text) {
     if (text.length > 0) {
-      final newMessage = new ChatMessage(text: text, uid: 'my_uid');
+      final newMessage = new ChatMessage(
+        text: text,
+        uid: 'my_uid',
+        animationController: AnimationController(
+          vsync: this,
+          duration: Duration(milliseconds: 150),
+        ),
+      );
       _messages.add(newMessage);
+      newMessage.animationController.forward();
       _textController.clear();
       _focusNode.requestFocus();
       setState(() {});
     }
+  }
+
+  @override
+  void dispose() {
+    // Clean all created animation controllers
+    for (ChatMessage message in _messages) {
+      message.animationController.dispose();
+    }
+    super.dispose();
   }
 }
